@@ -1,13 +1,19 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
+#use spaces, not tabs, in this YAML file.
 one:
-  title: MyString
+  title: Amazing Book
   description: MyText
-  image_url: MyString
+  image_url: lorem.jpg
   price: 9.99
 
 two:
   title: MyString
   description: MyText
-  image_url: MyString
+  image_url: lorem.jpg
   price: 9.99
+
+bike:
+  title: Amazing Bike
+  description: This bike is the best bike you have ever seen!
+  image_url: lorem.jpg
+  price: 79.95
