@@ -9,11 +9,15 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   test "should get index" do
     get products_url
     assert_response :success
+    assert_select 'h1', 'Amazing Bike'
+    assert_select 'tr.list_line_odd', 3
+    assert_select 'tr.list_line_even', 2
   end
 
   test "should get new" do
     get new_product_url
     assert_response :success
+    assert_select 'form', true
   end
 
   test "should create product" do
@@ -32,6 +36,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   test "should get edit" do
     get edit_product_url(@product)
     assert_response :success
+    assert_select 'form', true
   end
 
   test "should update product" do
@@ -39,11 +44,18 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to product_url(@product)
   end
 
-  test "should destroy product" do
+  test "should destroy product, no line items present" do
     assert_difference('Product.count', -1) do
       delete product_url(@product)
     end
-
     assert_redirected_to products_url
   end
+
+  test "should not destroy product when line items are present" do
+    assert_difference('Product.count', 0) do
+      delete product_url(products(:two))
+    end
+    assert_redirected_to products_url
+  end
+
 end

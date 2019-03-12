@@ -3,7 +3,7 @@ require 'test_helper'
 class ProductTest < ActiveSupport::TestCase
   def new_product(image_url)
     product = Product.new(
-      title: 'TestTitle',
+      title: 'TestTitleee',
       description: 'TestDescription',
       price: 1,
       image_url: image_url
@@ -26,17 +26,17 @@ class ProductTest < ActiveSupport::TestCase
                           image_url: 'example.png')
     product.price = -1
     assert product.invalid?
-    assert_equal ["must be greater than or equal to 0.01"],
+    assert_equal ["must be at least 0.01"],
       product.errors[:price]
     product.price = 0
-    assert_equal ["must be greater than or equal to 0.01"],
+    assert_equal ["must be at least 0.01"],
       product.errors[:price]
     product.price = 1
     assert product.valid?
   end
 
   test "image_url must be correct format" do
-    ok = %w{ ex.gif ex.png ex.jpg EX.JPG Ex.Png https://fndfdf.com/dfd/dfd/yop.gif }
+    ok = %w{ ex.png ex.jpg lorem.jpg EX.JPG Ex.Png https://fndfdf.com/dfd/dfd/yop.gif }
     bad = %w{ ex.gif.large ex.word ex.doc ex.png/large }
     ok.each do |image_url|
       assert new_product(image_url).valid?, "#{image_url} should be valid"
@@ -52,6 +52,23 @@ class ProductTest < ActiveSupport::TestCase
                           image_url: 'lorem.jpg',
                           price: 100)
     assert product.invalid?
-    assert_equal ["has already been taken"], product.errors[:title]
+    assert_equal ["must be unique"], product.errors[:title]
+  end
+
+  test "title must be between 10 and 80 characters" do
+    product = products(:shorttitle)
+    assert product.invalid?
+    assert_equal ["must be between 10 and 80 characters long."], product.errors[:title]
+    product = products(:longtitle)
+    assert product.invalid?
+    assert_equal ["must be between 10 and 80 characters long."], product.errors[:title]
+    product = products(:one)
+    assert product.valid?
+  end
+
+  test "product must have no dependent line items" do
+    product = products(:two)
+    product.destroy
+    assert_equal ["Line Item(s) Present"], products(:two).errors[:base]
   end
 end

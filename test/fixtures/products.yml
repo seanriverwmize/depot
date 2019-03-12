@@ -7,7 +7,7 @@ one:
   price: 9.99
 
 two:
-  title: MyString
+  title: My Product Title
   description: MyText
   image_url: lorem.jpg
   price: 9.99
@@ -17,3 +17,15 @@ bike:
   description: This bike is the best bike you have ever seen!
   image_url: lorem.jpg
   price: 79.95
+
+shorttitle:
+  title: short
+  description: aaaa
+  image_url: lorem.jpg
+  price: 10
+
+longtitle:
+  title: over eighty characters longover eighty characters longover eighty characters longover
+  description: aaaa
+  image_url: lorem.jpg
+  price: 10
